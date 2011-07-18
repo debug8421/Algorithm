@@ -78,6 +78,82 @@ rb_node *CRbtree::right_rotate(rb_node *ptr_pivot)
 
 	return ptr_Y;
 	
+}
 
 
+rb_node *CRbtree::insert(int key)
+{
+	rb_node *ptr_node = new rb_node();
+	ptr_node->key = key;
+	ptr_node->ptr_lchild = 0;
+	ptr_node->ptr_rchild = 0;
+	ptr_node->ptr_parent = 0;
+	ptr_node->color = RED;
+//sort
+	rb_node *ptr = ptr_root;
+	if(ptr_root == 0)
+	{
+		ptr_root = ptr_node;
+		ptr_root->color = BLACK;
+	}
+	while(ptr != 0 )
+	{
+		if(ptr_node->key < ptr->key )
+		{
+			if(ptr->ptr_lchild != 0)
+			{
+				rb_node *ptr_lchild = ptr->ptr_lchild;
+				if(ptr_node->key >= ptr_lchild->key)
+				{
+					ptr->ptr_lchild = ptr_node;
+					ptr_node->ptr_parent = ptr;
+					ptr_node->ptr_lchild = ptr_lchild;
+					ptr_lchild->ptr_parent = ptr_node;
+					break;
+				}
+				else
+				{
+					ptr = ptr->ptr_lchild;
+
+				}
+			}
+			else
+			{
+				ptr->ptr_lchild = ptr_node;
+				ptr_node->ptr_parent = ptr;
+
+			}
+
+		}
+		else
+		{
+			if(ptr->ptr_rchild != 0)
+			{
+				rb_node *ptr_rchild = ptr->ptr_rchild;
+				if(ptr_node->key <= ptr_rchild->key)
+				{
+					ptr->ptr_rchild = ptr_node;
+					ptr_node->ptr_parent = ptr;
+					ptr_node->ptr_rchild = ptr_rchild;
+					ptr_rchild->ptr_parent = ptr_node;
+					break;
+				}
+				else
+				{
+					ptr = ptr->ptr_rchild;
+				}
+			}
+			else
+			{
+				ptr_node->ptr_parent = ptr;
+				ptr->ptr_rchild = ptr_node;
+
+			}
+
+		}
+
+
+	}
+
+	return ptr_root;
 }

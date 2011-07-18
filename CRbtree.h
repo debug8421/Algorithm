@@ -33,6 +33,7 @@ public:
 	virtual ~CRbtree();
 	rb_node *left_rotate(rb_node *ptr_pivot);
 	rb_node *right_rotate(rb_node *ptr_pivot);
+	rb_node *insert(int key);
 
 
 };
