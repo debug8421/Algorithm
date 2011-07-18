@@ -34,6 +34,7 @@ public:
 	rb_node *left_rotate();
 	rb_node *right_rotate();
 
+
 };
 
 #endif /* CRBTREE_H_ */
