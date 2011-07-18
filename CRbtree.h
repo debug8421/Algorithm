@@ -25,14 +25,14 @@ struct rb_node
 class CRbtree {
 protected:
 
-	rb_node *root;
+	rb_node *ptr_root;
 
 public:
 
 	CRbtree();
 	virtual ~CRbtree();
-	rb_node *left_rotate();
-	rb_node *right_rotate();
+	rb_node *left_rotate(rb_node *ptr_pivot);
+	rb_node *right_rotate(rb_node *ptr_pivot);
 
 
 };
