@@ -9,7 +9,7 @@
 #include "CRbtree.h"
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
 	CRbtree rbtree;
 	rbtree.insert(3);
@@ -17,7 +17,7 @@ int main()
 	rbtree.insert(2);
 	rbtree.insert(5);
 	rbtree.insert(9);
-	rbtree.insert(7);
+	rbtree.insert(11);
 	rbtree.insert(4);
 	rbtree.insert(0);
 	rbtree.insert(8);
