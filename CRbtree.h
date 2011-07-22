@@ -47,6 +47,9 @@ public:
 
 	rb_node *rb_fixed_insert(rb_node *ptr_node);
 	void mid_visit(rb_node* ptr_root, void(*func)(rb_node*, void*), void *)const;
+	rb_node *get_successor(rb_node* ptr_node);
+	void remove(rb_node *ptr_node);
+	rb_node *rb_fixed_remove(rb_node *ptr_node);
 	friend ostream& operator<<(ostream& out,const CRbtree& rbtree);
 	friend istream& operator>>(istream& in, CRbtree& rbtree);
 	
