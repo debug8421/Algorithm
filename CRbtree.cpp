@@ -409,7 +409,7 @@ void CRbtree::remove(rb_node *ptr_node)
    else
    {
 	 ptr_y->ptr_parent->ptr_lchild = NULL;
-	 ptr_y->ptr_parent->ptr_lchild = NULL;
+	 ptr_y->ptr_parent->ptr_rchild = NULL;
     }
     
    if(ptr_y->key != ptr_node->key)
