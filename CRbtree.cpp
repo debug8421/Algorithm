@@ -365,7 +365,7 @@ void CRbtree::remove(rb_node *ptr_node)
 	assert(ptr_node);
 	rb_node *ptr_y = NULL;
 	rb_node *ptr_x = NULL;
-    rb_node *ptr_py = NULL;
+        rb_node *ptr_py = NULL;
 	COLOR color;
 	if(NULL == ptr_node->ptr_rchild || NULL == ptr_node->ptr_lchild)
 	{
@@ -393,38 +393,127 @@ void CRbtree::remove(rb_node *ptr_node)
 			ptr_root->color = BLACK;
 		}
 	}
-   if(ptr_x != NULL)
-   {
+       if(ptr_x != NULL)
+       {
 	   ptr_x->ptr_parent = ptr_y->ptr_parent;
 		
 	   if(ptr_y == ptr_y->ptr_parent->ptr_lchild)
-       {
+           {
 		  ptr_x = ptr_y->ptr_parent->ptr_lchild;
 	   }
 	   else
 	   {
 		 ptr_x = ptr_y->ptr_parent->ptr_rchild;
 	   }
-    }
-   else
-   {
+        } 
+        else
+       {
 	 ptr_y->ptr_parent->ptr_lchild = NULL;
 	 ptr_y->ptr_parent->ptr_rchild = NULL;
-    }
+	 ptr_x = ptr_y->ptr_parent;
+       }
     
-   if(ptr_y->key != ptr_node->key)
+        if(ptr_y->key != ptr_node->key)
 	{
 	   ptr_node->key = ptr_y->key;
 	}
-   if(color == BLACK)
-   {
-		rb_fixed_remove(ptr_x);
-   }
+	delete ptr_y;
+	ptr_y = NULL;
+        if(color == BLACK)
+        {
+	   rb_fixed_remove(ptr_x);
+        }
 
 }
 rb_node* CRbtree::rb_fixed_remove(rb_node *ptr_node)
 {
+   /*
+    The color of his brother and  the color of his children.
+    */
+   assert(ptr_node);
+   rb_node *ptr_w =  NULL;
+   rb_node *ptr_x = ptr_node;
+   bool left = true;
+   while(BLACK == ptr_x->color && NULL != ptr_x->ptr_parent)
+   {
+		
+        if(ptr_x == ptr_x->ptr_parent->ptr_lchild)
+        {
+   	   ptr_w = ptr_x->ptr_rchild;
+	   left = true;
+        }
+        else
+        {
+   	   ptr_w = ptr_x->ptr_parent->ptr_lchild;
+	   left = false;
 
-	return NULL;
+        }
+        assert(ptr_w);
+        if( ptr_w->color == RED)
+         {
+	    ptr_w->color = BLACK;
+	    ptr_x->ptr_parent->color = RED;
+	    if(left)
+	    {      
+	       left_rotate(ptr_x->ptr_parent);
+	    }
+	    else
+	    {
+	     	right_rotate(ptr_x->ptr_parent);
+	    }
+	  }
+        else if( ptr_w->color == BLACK)
+	{
+	    if((ptr_w->ptr_lchild == NULL  && ptr_w->ptr_rchild == NULL)\
+	     || ptr_w->ptr_lchild->color == BLACK&& ptr_w->ptr_rchild->color == BLACK)
+	    {
+	    	ptr_w->color = RED;
+		ptr_x = ptr_x->ptr_parent;
+	    }
+	    else if(true == left)
+	    {
+		 if((ptr_w->ptr_lchild != NULL && ptr_w->ptr_lchild->color == RED)\
+		    &&(ptr_w->ptr_rchild == NULL || ptr_w->ptr_rchild->color == BLACK))
+	         {
+	        	ptr_w->color = RED;
+		        ptr_w->ptr_lchild->color = BLACK;
+		        right_rotate(ptr_w);
+	         }
+		 else
+		 {	
+			ptr_w->color = ptr_x->ptr_parent->color;
+			ptr_x->ptr_parent->color = BLACK;
+			ptr_x->ptr_rchild->color = BLACK;
+			left_rotate(ptr_x->ptr_parent);
+			ptr_x = ptr_w;
+			 
+		 } 
+	    }
+	    else if(false == left)
+	    {
+		   if ( ((ptr_w->ptr_rchild != NULL && ptr_w->ptr_rchild->color == RED)\
+		    &&(ptr_w->ptr_lchild == NULL || ptr_w->ptr_lchild->color == BLACK)))
+	           {
+	    	       ptr_w->color = RED;
+		       ptr_w->ptr_rchild->color = BLACK;
+		       left_rotate(ptr_w);
+	           }
+		   else
+		   {
+		   	ptr_w->color= ptr_x->ptr_parent->color;
+			ptr_x->ptr_parent->color = BLACK;
+			ptr_w->ptr_lchild->color = BLACK;
+			right_rotate(ptr_x->ptr_parent);
+			ptr_x = ptr_w;
+		   }
+	    }
+	    
+
+	}
+
+    }
+      
+     ptr_x->color = BLACK;
+     return ptr_x;
 }
 
