@@ -34,12 +34,18 @@ public:
 
 	CRbtree();
 	virtual ~CRbtree();
+	rb_node *get_root()
+	{
+		return ptr_root;
+	}
 	rb_node *left_rotate(rb_node *ptr_pivot);
 	rb_node *right_rotate(rb_node *ptr_pivot);
 	rb_node *find(int key,bool &left);
 	rb_node *insert(int key);
+	int *remove(int key);
+
 	rb_node *rb_fixed_insert(rb_node *ptr_node);
-	friend ios_base& operator<<(ios_base& out,CRbtree& rbtree);
+	friend ios_base& operator<<(ios_base& out,const CRbtree& rbtree);
 	friend ios_base& operator>>(ios_base& in, CRbtree& rbtree);
 	
 

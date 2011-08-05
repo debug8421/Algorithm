@@ -269,7 +269,7 @@ rb_node *CRbtree::rb_fixed_insert(rb_node *ptr_node)
 	return ptr_node;
 }
 
-ios_base& operator<<(ios_base& out,CRbtree& rbtree )
+ios_base& operator<<(ios_base& out,const CRbtree& rbtree )
 {
 
   return out;
