@@ -11,6 +11,10 @@ using namespace std;
 
 int main()
 {
+	CRbtree rbtree;
+	rbtree.insert(1);
+	rbtree.insert(2);
+	rbtree.insert(3);
 	cout << "Hello World!\n";
 	return 0;
 }

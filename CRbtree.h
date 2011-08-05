@@ -7,6 +7,8 @@
 
 #ifndef CRBTREE_H_
 #define CRBTREE_H_
+#include <ios>
+using namespace std;
 class CRbtree;
 enum COLOR
 {
@@ -37,7 +39,9 @@ public:
 	rb_node *find(int key,bool &left);
 	rb_node *insert(int key);
 	rb_node *rb_fixed_insert(rb_node *ptr_node);
-
+	friend ios_base& operator<<(ios_base& out,CRbtree& rbtree);
+	friend ios_base& operator>>(ios_base& in, CRbtree& rbtree);
+	
 
 };
 
