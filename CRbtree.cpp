@@ -10,6 +10,7 @@
 #include <cstddef>
 CRbtree::CRbtree() {
 	// TODO Auto-generated constructor stub
+	ptr_root = 0;
 
 }
 
