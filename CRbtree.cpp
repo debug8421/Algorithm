@@ -131,7 +131,6 @@ rb_node *CRbtree::insert(int key)
 	ptr_node->ptr_parent = 0;
 	ptr_node->color = RED;
 //sort
-	rb_node *ptr = ptr_root;
 	//find
 
 	bool left = true;
@@ -178,8 +177,94 @@ rb_node *CRbtree::insert(int key)
 
 	return ptr_node;
 }
+/**************************************************/
+/* parent node: P
+ * uncle node: U
+ * parent's parent node: G
+ * N is red, and N is left child, P is left child.
+ * case1: the parent and  uncle node are red,so gradfather node must be black.
+ *		set P and U black, G red, set G current node N. Maybe conflict with 2.
+ * case2: the parent node P is red,uncle node U is black, current node N is red and right child.
+ *        set P pivot, N is Y, then left rotate. N is left child.
+ *        now set current node N is P.
+ * case3: N is red. N's parent is red, and N is left child. N's parent is left child.
+ *        set N black, the parent's of N is red. set N's parent is current N.
+ *
+ * */
+
+/* 
+ *  ptr_node is  the currnet node.
+ */
 rb_node *CRbtree::rb_fixed_insert(rb_node *ptr_node)
 {
+    assert(ptr_node);
+	rb_node *ptr_current = ptr_node;
+	rb_node *ptr_parent = ptr_current->ptr_parent;
+	rb_node *ptr_gradfather = ptr_parent->ptr_parent;
+	rb_node *ptr_uncle = 0;
+	//case1 \
+	//
+	//
+	if(BLACK == ptr_parent->color)
+	{
+		return ptr_current;
+	}
+	else
+	{
+		assert(ptr_gradfather);
+		if(ptr_current == ptr_gradfather->ptr_lchild)
+		{
+			ptr_uncle = ptr_gradfather->ptr_rchild;
+		}
+		else
+		{
+			ptr_uncle = ptr_gradfather->ptr_lchild;
+		}
+	   if( RED == ptr_parent->color && RED == ptr_uncle->color)
+	   {
+		
+		  ptr_parent->color = BLACK;
+		  ptr_uncle->color = BLACK;
+		  ptr_gradfather->color = RED;
+		  ptr_current = ptr_gradfather;
+		  ptr_parent = ptr_current->ptr_parent;
+
+	   }
+	    if(RED == ptr_parent->color && (0 == ptr_uncle|| (0 != ptr_uncle && BLACK == ptr_uncle->color)))
+	   {
+		 ptr_gradfather = ptr_parent->ptr_parent;
+         assert(ptr_gradfather);
+		 if(ptr_current == ptr_parent->ptr_rchild && ptr_parent == ptr_gradfather->ptr_lchild)
+		 {
+		    left_rotate(ptr_parent);	
+			ptr_current = ptr_parent;
+			ptr_parent = ptr_current->ptr_parent;
+		 }
+		 else if( ptr_current == ptr_parent ->ptr_lchild && ptr_parent == ptr_gradfather->ptr_rchild)
+		 {
+			right_rotate(ptr_parent);
+			ptr_current = ptr_parent;
+			ptr_parent = ptr_current->ptr_parent;
+		
+		 }
+	    
+		  if(ptr_current == ptr_parent->ptr_lchild && ptr_parent == ptr_gradfather->ptr_lchild)
+		  {
+				ptr_parent->color = BLACK;
+				ptr_gradfather->color = RED;
+                right_rotate(ptr_gradfather);
+				
+		  }
+		  else if(ptr_current == ptr_parent->ptr_rchild && ptr_parent == ptr_gradfather->ptr_rchild)
+		  {
+				ptr_parent->color = BLACK;
+				ptr_gradfather->color = RED;
+				left_rotate(ptr_gradfather);
+
+		  }
+
+		}
+	}
 
 	return ptr_node;
 }
