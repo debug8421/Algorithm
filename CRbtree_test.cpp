@@ -12,9 +12,10 @@ using namespace std;
 int main()
 {
 	CRbtree rbtree;
+	rbtree.insert(3);
 	rbtree.insert(1);
 	rbtree.insert(2);
-	rbtree.insert(3);
+	cout << rbtree<<endl;
 	cout << "Hello World!\n";
 	return 0;
 }

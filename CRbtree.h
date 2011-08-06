@@ -7,7 +7,8 @@
 
 #ifndef CRBTREE_H_
 #define CRBTREE_H_
-#include <ios>
+#include <istream>
+#include <ostream>
 using namespace std;
 class CRbtree;
 enum COLOR
@@ -45,8 +46,9 @@ public:
 	int *remove(int key);
 
 	rb_node *rb_fixed_insert(rb_node *ptr_node);
-	friend ios_base& operator<<(ios_base& out,const CRbtree& rbtree);
-	friend ios_base& operator>>(ios_base& in, CRbtree& rbtree);
+	void mid_visit(rb_node* ptr_root, void(*func)(rb_node*, void*), void *)const;
+	friend ostream& operator<<(ostream& out,const CRbtree& rbtree);
+	friend istream& operator>>(istream& in, CRbtree& rbtree);
 	
 
 };

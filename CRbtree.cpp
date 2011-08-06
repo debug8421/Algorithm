@@ -8,6 +8,9 @@
 #include "CRbtree.h"
 #include <assert.h>
 #include <cstddef>
+#include <vector>
+#include <iterator>
+using namespace std;
 CRbtree::CRbtree() {
 	// TODO Auto-generated constructor stub
 	ptr_root = 0;
@@ -161,7 +164,7 @@ rb_node *CRbtree::insert(int key)
 	{
 		if(0 == ptr -> ptr_rchild)
 		{
-			ptr->ptr_lchild = ptr_node;
+			ptr->ptr_rchild = ptr_node;
 		    ptr_node->ptr_parent = ptr;
 		}
 		else
@@ -173,7 +176,7 @@ rb_node *CRbtree::insert(int key)
 			ptr_rchild->ptr_parent = ptr_node;
 		}
 	}
-	rb_fixed_insert(ptr_node);
+//	rb_fixed_insert(ptr_node);
 
 	return ptr_node;
 }
@@ -269,13 +272,42 @@ rb_node *CRbtree::rb_fixed_insert(rb_node *ptr_node)
 	return ptr_node;
 }
 
-ios_base& operator<<(ios_base& out,const CRbtree& rbtree )
-{
 
-  return out;
+void CRbtree::mid_visit(rb_node* ptr_root,void(*func)(rb_node*, void*), void * para)const
+{
+	rb_node *ptr = ptr_root;
+	if(ptr_root == 0)
+	  return;
+	else
+	{
+	   CRbtree::mid_visit(ptr_root->ptr_lchild, func, para);
+	   func(ptr_root, para);
+	   CRbtree::mid_visit(ptr_root->ptr_rchild,func,para);
+	}
+	 
+}
+void enumeration(rb_node* rb_node_ptr, void* ptr_vector_data)
+{
+	vector<int> * vData = (vector<int>*) ptr_vector_data;
+	if(rb_node_ptr)
+	{
+	   vData->push_back(rb_node_ptr->key);
+	}
 }
 
-ios_base& operator>>(ios_base& in, CRbtree& rbtree)
+ostream& operator<<(ostream& out,const CRbtree& rbtree )
 {
-	return in;
+   vector<int> *ptr_vector_data = new vector<int>();
+  rbtree.mid_visit(rbtree.ptr_root,enumeration, (void*)ptr_vector_data);
+   for(vector<int>::iterator iter = ptr_vector_data->begin(); iter != ptr_vector_data->end(); iter ++)
+   {
+      out << *iter<<'\t';
+   }
+    return out;
 }
+
+istream& operator>>(istream& in, CRbtree& rbtree)
+{
+    return in;
+ }
+
