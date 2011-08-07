@@ -133,6 +133,7 @@ rb_node *CRbtree::insert(int key)
 	ptr_node->ptr_rchild = 0;
 	ptr_node->ptr_parent = 0;
 	ptr_node->color = RED;
+	rb_node *ptr_current = 0;
 //sort
 	//find
 
@@ -142,7 +143,7 @@ rb_node *CRbtree::insert(int key)
 	{
 		ptr_root = ptr_node;
 		ptr_root->color = BLACK;
-		return ptr_node;
+		return 0;
 	}
 	else if(true == left)
    {
@@ -176,9 +177,29 @@ rb_node *CRbtree::insert(int key)
 			ptr_rchild->ptr_parent = ptr_node;
 		}
 	}
-//	rb_fixed_insert(ptr_node);
 
-	return ptr_node;
+	if(ptr_node->ptr_parent->color == RED)
+	{
+		ptr_current = ptr_node;
+	}
+	else if(ptr_node->ptr_lchild != 0 && ptr_node->ptr_lchild->color == RED)
+	{
+		ptr_current = ptr_node->ptr_lchild;
+	}
+	else if(ptr_node->ptr_rchild != 0 && ptr_node->ptr_rchild->color == RED)
+	{
+		ptr_current = ptr_node->ptr_rchild;
+	}
+	else
+	{
+	  ptr_current = 0;
+	}
+	if(ptr_current)
+	{
+	  rb_fixed_insert(ptr_current);
+	}
+
+	return ptr_current;
 }
 /**************************************************/
 /* parent node: P
@@ -215,7 +236,7 @@ rb_node *CRbtree::rb_fixed_insert(rb_node *ptr_node)
 	else
 	{
 		assert(ptr_gradfather);
-		if(ptr_current == ptr_gradfather->ptr_lchild)
+		if(ptr_parent == ptr_gradfather->ptr_lchild)
 		{
 			ptr_uncle = ptr_gradfather->ptr_rchild;
 		}
@@ -223,7 +244,7 @@ rb_node *CRbtree::rb_fixed_insert(rb_node *ptr_node)
 		{
 			ptr_uncle = ptr_gradfather->ptr_lchild;
 		}
-	   if( RED == ptr_parent->color && RED == ptr_uncle->color)
+	   if( RED == ptr_parent->color && 0 != ptr_uncle && RED == ptr_uncle->color)
 	   {
 		
 		  ptr_parent->color = BLACK;
@@ -231,17 +252,41 @@ rb_node *CRbtree::rb_fixed_insert(rb_node *ptr_node)
 		  ptr_gradfather->color = RED;
 		  ptr_current = ptr_gradfather;
 		  ptr_parent = ptr_current->ptr_parent;
+		  if(ptr_parent == 0)
+		  {
+			ptr_gradfather = 0;
+			ptr_uncle = 0;
+		  }
+		  else if(ptr_parent->ptr_parent == 0)
+		  {
+			ptr_gradfather = 0;
+			ptr_uncle = 0;
+		  }
+		 else 
+		 {
+			ptr_gradfather = ptr_parent->ptr_parent;
+		   if(ptr_parent == ptr_gradfather->ptr_lchild)
+		   {
+			  ptr_uncle = ptr_gradfather->ptr_rchild;
+		   }
+		   else
+		   {
+			  ptr_uncle = ptr_gradfather->ptr_lchild;
+		   }
+		 }
+		  
 
 	   }
 	    if(RED == ptr_parent->color && (0 == ptr_uncle|| (0 != ptr_uncle && BLACK == ptr_uncle->color)))
 	   {
-		 ptr_gradfather = ptr_parent->ptr_parent;
+		 
          assert(ptr_gradfather);
 		 if(ptr_current == ptr_parent->ptr_rchild && ptr_parent == ptr_gradfather->ptr_lchild)
 		 {
 		    left_rotate(ptr_parent);	
 			ptr_current = ptr_parent;
 			ptr_parent = ptr_current->ptr_parent;
+
 		 }
 		 else if( ptr_current == ptr_parent ->ptr_lchild && ptr_parent == ptr_gradfather->ptr_rchild)
 		 {
