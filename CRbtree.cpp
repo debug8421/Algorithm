@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <cstddef>
 #include <vector>
+#include <stdlib.h>
 #include <iterator>
 using namespace std;
 CRbtree::CRbtree() {
@@ -332,4 +333,98 @@ istream& operator>>(istream& in, CRbtree& rbtree)
 {
     return in;
  }
+
+rb_node* CRbtree::get_successor(rb_node* ptr_node)
+{
+	assert(ptr_node);
+	rb_node * ptr = NULL;
+	if(ptr_node ->ptr_rchild)
+	{
+		while(ptr->ptr_lchild)
+		{
+			ptr = ptr->ptr_lchild;
+		}
+		return ptr;
+	}
+	else if(ptr_node->ptr_parent == NULL)
+	{
+		return NULL;
+	}
+	else if(ptr_node == ptr_node->ptr_parent->ptr_lchild)
+	{
+		return ptr_node->ptr_parent;
+	}
+	else 
+	{
+		return NULL;
+	}
+	return ptr;
+}
+void CRbtree::remove(rb_node *ptr_node)
+{
+	assert(ptr_node);
+	rb_node *ptr_y = NULL;
+	rb_node *ptr_x = NULL;
+    rb_node *ptr_py = NULL;
+	COLOR color;
+	if(NULL == ptr_node->ptr_rchild || NULL == ptr_node->ptr_lchild)
+	{
+		ptr_y = ptr_node;
+	}
+	else
+	{
+		ptr_y = get_successor(ptr_node);
+	}
+	color = ptr_y->color;
+	if(ptr_y->ptr_lchild)
+	{
+		ptr_x = ptr_y->ptr_lchild;
+	}
+	else
+	{
+		ptr_x = ptr_y->ptr_rchild;
+	}
+
+	if(ptr_y->ptr_parent == NULL)
+	{
+		ptr_root = ptr_x;
+		if(ptr_root != NULL)
+		{
+			ptr_root->color = BLACK;
+		}
+	}
+   if(ptr_x != NULL)
+   {
+	   ptr_x->ptr_parent = ptr_y->ptr_parent;
+		
+	   if(ptr_y == ptr_y->ptr_parent->ptr_lchild)
+       {
+		  ptr_x = ptr_y->ptr_parent->ptr_lchild;
+	   }
+	   else
+	   {
+		 ptr_x = ptr_y->ptr_parent->ptr_rchild;
+	   }
+    }
+   else
+   {
+	 ptr_y->ptr_parent->ptr_lchild = NULL;
+	 ptr_y->ptr_parent->ptr_lchild = NULL;
+    }
+    
+   if(ptr_y->key != ptr_node->key)
+	{
+	   ptr_node->key = ptr_y->key;
+	}
+   if(color == BLACK)
+   {
+		rb_fixed_remove(ptr_x);
+   }
+
+}
+rb_node* CRbtree::rb_fixed_remove(rb_node *ptr_node)
+{
+
+	return NULL;
+}
 

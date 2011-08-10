@@ -12,18 +12,11 @@ using namespace std;
 int main()
 {
 	CRbtree rbtree;
-	rbtree.insert(3);
-	rbtree.insert(1);
-	rbtree.insert(2);
-	rbtree.insert(5);
-	rbtree.insert(9);
-	rbtree.insert(7);
-	rbtree.insert(4);
-	rbtree.insert(0);
-	rbtree.insert(8);
-	rbtree.insert(1);
-	rbtree.insert(17);
-	rbtree.insert(19);
+	int data[]={12, 1, 9, 2, 0, 11, 7, 19, 4, 15, 18,  5, 14, 13, 10, 16, 6, 3, 8 ,17};
+	for(int i = 0; i < 20; i ++)
+	{
+		rbtree.insert(data[i]);
+	}
 	cout << rbtree<<endl;
 	cout << "Hello World!\n";
 	return 0;
