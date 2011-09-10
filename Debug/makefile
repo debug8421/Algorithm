@@ -40,16 +40,16 @@ endif
 all: Algorithm
 
 # Tool invocations
-Algorithm: $(OBJS) $(USER_OBJS)
+Algorithm: $(OBJS_RBTREE) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++  -o"Algorithm" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o"rbtree" $(OBJS_RBTREE) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) Algorithm
+	-$(RM) $(C++_DEPS)$(OBJS_RBTREE)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) rbtree
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -7,7 +7,7 @@ CPP_SRCS += \
 ../CRbtree.cpp \
 ../CRbtree_test.cpp 
 
-OBJS += \
+OBJS_RBTREE += \
 ./CRbtree.o \
 ./CRbtree_test.o 
 
