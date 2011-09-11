@@ -4,8 +4,8 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../CRbtree.cpp \
-../CRbtree_test.cpp 
+../Rbtree/CRbtree.cpp \
+../Rbtree/CRbtree_test.cpp 
 
 OBJS_RBTREE += \
 ./CRbtree.o \
@@ -17,7 +17,7 @@ CPP_DEPS += \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-%.o: ../%.cpp
+%.o: ../Rbtree/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross G++ Compiler'
 	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
